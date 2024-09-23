@@ -1,9 +1,11 @@
-module tb_bitbrick();
+module tb_bitbrick;
 
+    // Testbench signals
     reg [1:0] a, w;
-    reg sel;
+    reg [1:0] sel;
     wire [3:0] p;
-    
+
+    // Instantiate the bitbrick module
     bitbrick uut (
         .a(a),
         .w(w),
@@ -11,18 +13,19 @@ module tb_bitbrick();
         .p(p)
     );
 
+    // Testbench procedure
     initial begin
-        // Test Case 1: Unsigned multiplication
-        a = 2'b01; w = 2'b10; sel = 1; #10;
-        $display("Test Case 1 - Unsigned: a = %b, w = %b, sel = %b, p = %b", a, w, sel, p);
+        a = 2'b11; w = 2'b10; sel = 2'b01; #10;
+        $display("Test Case a: a = %b, w = %b, sel = %b, p = %b", a, w, sel, p);
 
-        // Test Case 2: Signed multiplication
-        a = 2'b01; w = 2'b11; sel = 0; #10;
-        $display("Test Case 2 - Signed and unsigned: a = %b, w = %b, sel = %b, p = %b", a, w, sel, p);
+        a = 2'b10; w = 2'b10; sel = 2'b10; #10;
+        $display("Test Case b: a = %b, w = %b, sel = %b, p = %b", a, w, sel, p);
 
-        // Test Case 3: Signed and unsigned multiplication
-        a = 2'b01; w = 2'b01; sel = 0; #10;
-        $display("Test Case 3 - Signed: a = %b, w = %b, sel = %b, p = %b", a, w, sel, p);
+        a = 2'b11; w = 2'b01; sel = 2'b10; #10;
+        $display("Test Case c: a = %b, w = %b, sel = %b, p = %b", a, w, sel, p);
+
+        a = 2'b10; w = 2'b01; sel = 2'b00; #01;
+        $display("Test Case d: a = %b, w = %b, sel = %b, p = %b", a, w, sel, p);
 
         // End simulation
         $finish;
