@@ -1,4 +1,6 @@
 /*
+THIS IS WRONG AND NOT WORKING AS INTENDED
+
 2x2 mode: one 2-bit activation and 16 2-bit weights
 4x4 mode: one 4-bit activation and four 4-bit weights
 8x8 mode: one 8-bit activation and one 8-bit weights
