@@ -7,8 +7,7 @@ module bitbrick(
     input [1:0] sel,
     output reg [3:0] p
 );
-    wire [3:0] unsigned_mult_result;
-    wire [3:0] signed_mult_result;
+    wire [3:0] unsigned_mult_result, signed_mult_result;
     reg [3:0] mux_result;
 
     localparam _signed_unsigned = 2'b10;
@@ -22,15 +21,9 @@ module bitbrick(
     assign signed_mult_result = (a[1] * b[1] << 2) - (a[1] * b[0] << 1) - (a[0] * b[1] << 1) + (a[0] * b[0]);;
 
     always @(*) begin
-        
         case (sel)
-            _signed: begin
-
-                p = signed_mult_result;
-            end
-            _unsigned: begin
-                p = unsigned_mult_result;
-            end
+            _signed: p = signed_mult_result;
+            _unsigned: p = unsigned_mult_result;
             _signed_unsigned: begin
                 case (b[1])
                     1'b1: mux_result = {a, 2'b00};
