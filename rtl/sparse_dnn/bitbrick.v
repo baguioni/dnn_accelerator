@@ -9,8 +9,6 @@ module bitbrick(
 );
     wire [3:0] unsigned_mult_result;
     wire [3:0] signed_mult_result;
-    wire [3:0] shifted_A;
-    wire [3:0] adder_result;
     reg [3:0] mux_result;
 
     localparam _signed_unsigned = 2'b10;
