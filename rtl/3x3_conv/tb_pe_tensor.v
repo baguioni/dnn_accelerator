@@ -8,9 +8,7 @@ module tb_pe_tensor;
     reg [72 * N - 1:0] filter;
     wire [16 * N - 1:0] psumOut;
 
-    pe_tensor #(
-        .N(N)
-    ) uut (
+    pe_tensor uut (
         .clk(clk),
         .rst(rst),
         .wb_write_en(wb_write_en),
