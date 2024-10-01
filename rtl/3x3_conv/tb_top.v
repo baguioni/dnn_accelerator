@@ -1,16 +1,10 @@
 `timescale 1ns / 1ps
 
 module tb_top;
-
-    reg clk;
-    reg rst;
-    reg state;
-    reg [71:0] ifmap_in;
-    reg [71:0] filter_in;
-
+    reg clk, rst, state;
+    reg [71:0] ifmap_in, [71:0] filter_in, ifmap_data;
     wire [15:0] psumOut;
 
-    reg [71:0] ifmap_data;
     integer ifmap_file, r, psum_file;
     reg first_line;
 
@@ -74,7 +68,7 @@ module tb_top;
     end
 
     initial begin
-        $monitor("At time %t, psumOut = %h, state = %b, ifmap_in = %h, filter_in = %h",
+        $monitor("time %t, psumOut = %h, state = %b, ifmap_in = %h, filter_in = %h",
                  $time, psumOut, state, ifmap_in, filter_in);
     end
 endmodule
