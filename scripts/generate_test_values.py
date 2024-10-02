@@ -14,14 +14,16 @@ def create_ifmap_file(filename, ifmap, kernel):
     with open(f"{filename}.dat", "w") as file:
         for w in range(W):  # Loop over output width
             for h in range(H):  # Loop over output height
-                pe_input = []
                 # Extract the sliding window of the feature map
                 rows = ifmap[w:w + S]
+
                 sliding_window = []
                 for row in rows:
                     sliding_window.append([format(value, "x") for value in row[h:h + R]])
                 
+                # display shape of sliding window
                 flat_pe_input = ''.join([val for sublist in sliding_window for val in sublist])
+                print(f"len: {len(flat_pe_input)}")
                 file.write(flat_pe_input + "\n")  # Newline after each sliding window
     
     print(f"Data has been written to '{filename}.dat'")
@@ -32,7 +34,7 @@ def create_output_file(filename, output):
     with open(f"out-{filename}.dat", "w") as file:
         for w in range(W):  # Loop over output width
             for h in range(H):  # Loop over output height
-                file.write(format(output[w][h], "x") + "\n")
+                file.write(str(output[w][h]) + "\n")
     
     print(f"Data has been written to 'out-{filename}.dat'")
 
@@ -60,6 +62,8 @@ def main():
     args = parser.parse_args()
 
     ifmap = create_image_array(args.shape)
+    print("Input feature map:")
+    print(ifmap)
     kernel = np.array([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
 
     result = convolve(ifmap, kernel)

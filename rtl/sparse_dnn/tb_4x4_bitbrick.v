@@ -17,12 +17,13 @@ module tb_bitbrick;
     // From the paper "A Precision-Scalable Energy-Efficient Convolutional Neural Network Accelerator"
     initial begin
         a = 4'b1011; b = 4'b0110; #10;
+        $display("Multiplication of 4-bit numbers using bitbrick");
+        $display("a = %b, b = %b\n", a, b);
         $display("Partial Product p0 (lower 2x2): %b", p0);
         $display("Partial Product p1 (upper a, lower b): %b", p1);
         $display("Partial Product p2 (lower a, upper b): %b", p2);
         $display("Partial Product p3 (upper 2x2): %b", p3);
-
-        $display("Test Case 1: a = %b, b = %b, product = %b", a, b, product);
+        $display("Final product = %b\n", product);
 
         $finish;
     end

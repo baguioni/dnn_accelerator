@@ -16,6 +16,7 @@ module pe_tensor (
     );
 
     pe_kernel pe_k(
+        .clk(clk),
         .ifmap(ifmap),
         .filter(filter_out),
         .psum(psum)

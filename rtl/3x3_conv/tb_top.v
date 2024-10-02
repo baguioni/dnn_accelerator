@@ -2,7 +2,7 @@
 
 module tb_top;
     reg clk, rst, state;
-    reg [71:0] ifmap_in, [71:0] filter_in, ifmap_data;
+    reg [71:0] ifmap_in, filter_in, ifmap_data;
     wire [15:0] psumOut;
 
     integer ifmap_file, r, psum_file;
@@ -24,14 +24,15 @@ module tb_top;
 
     initial begin
         rst = 1;
-        state = 0;
+        state = 1;
         ifmap_in = 0;
+        rst = 0;
         filter_in = 72'h010000000100000001;
         first_line = 1;
 
-        ifmap_file = $fopen("ifmap.dat", "r");
+        ifmap_file = $fopen("test.dat", "r");
         if (ifmap_file == 0) begin
-            $display("Error ifmap.dat");
+            $display("Error test.dat");
             $finish;
         end
 
@@ -42,7 +43,7 @@ module tb_top;
         end
 
         #10;
-        rst = 0;
+
 
         while (!$feof(ifmap_file)) begin
             r = $fscanf(ifmap_file, "%h\n", ifmap_data);
@@ -57,14 +58,14 @@ module tb_top;
             end
 
             #5;
-            $fwrite(psum_file, "%h\n", psumOut);
+            $fwrite(psum_file, "%d\n", psumOut);
         end
 
         $fclose(ifmap_file);
         $fclose(psum_file);
 
         #50;
-        $stop;
+        $finish;
     end
 
     initial begin
