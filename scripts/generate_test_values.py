@@ -19,7 +19,7 @@ def create_ifmap_file(filename, ifmap, kernel):
 
                 sliding_window = []
                 for row in rows:
-                    sliding_window.append([format(value, "x") for value in row[h:h + R]])
+                    sliding_window.append([format(value, "02x") for value in row[h:h + R]])
                 
                 # display shape of sliding window
                 flat_pe_input = ''.join([val for sublist in sliding_window for val in sublist])
