@@ -23,6 +23,7 @@ module pe_tensor (
     );
 
     accumulator acc(
+        .clk(clk),
         .psum(psum),
         .psumOut(psumOut)
     );
