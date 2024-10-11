@@ -1,17 +1,18 @@
-// Word-Addressable Buffer
-// Assume ifmap is row-major
-module wa_buffer #(
-    parameter Width = 5, // number of words (8-bit) in a line 
+// Byte-Addressable Buffer
+// AFAIK Synthesis tool can map this to a 2-D structure in memory
+module ba_buffer #(
+    parameter DataWidth = 8,
+    parameter Width = 5,
     parameter Depth = 5,
-    parameter AddrWidth = $clog2(Depth)
+    parameter AddrWidth = $clog2(Width*Depth)
 ) (
     input clk, writeEn, 
-    input [Width*8-1:0] dataIn,
+    input [DataWidth-1:0] dataIn,
     input [AddrWidth-1:0] writeAddr,
     input [AddrWidth-1:0] readAddr,
-    output [Width*8-1:0] dataOut,
+    output [DataWidth-1:0] dataOut,
 );
-    reg [Width*8-1:0] buffer [0:Depth-1];
+    reg [DataWidth-1:0] buffer [0:Depth-1];
 
     initial begin
         $readmemh("buffer.mem", buffer);
