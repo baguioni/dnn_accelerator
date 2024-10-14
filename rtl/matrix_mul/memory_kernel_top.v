@@ -1,8 +1,10 @@
-module memory_top (
+module memory_kernel_top (
     input clk, rst, routeEn, writeEn,
     input [AddrWidth-1:0] writeAddr, startAddr,
     input [DataWidth-1:0] dataIn, // Data to buffer
+    input [AddrWidth-1:0] inputWidth, // Size of input
     output finished,
+    output [3:0] state,
     output [MaxWidth*DataWidth-1:0] dataOut // Data from router
 );
     localparam MaxWidth = 9;
@@ -28,7 +30,7 @@ module memory_top (
         .dataOut(bufferOut)
     );
 
-    router #(
+    router_kernel #(
         .MaxWidth(MaxWidth),
         .Depth(Depth),
         .DataWidth(DataWidth)
@@ -38,7 +40,9 @@ module memory_top (
         .routeEn(routeEn),
         .startAddr(startAddr),
         .dataIn(bufferOut),
+        .inputWidth(inputWidth),
         .readEn(readEn),
+        .state(state),
         .readAddr(readAddr),
         .lastReadAddr(lastReadAddr),
         .dataOut(dataOut),
