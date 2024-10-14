@@ -6,7 +6,7 @@ module tb_memory_top;
     localparam AddrWidth = $clog2(Depth);
 
     reg clk, rst, routeEn, writeEn;
-    reg [AddrWidth-1:0] writeAddr, startAddr;
+    reg [AddrWidth-1:0] writeAddr, startAddr, finalAddr;
     reg [DataWidth-1:0] dataIn;
 
     wire finished;
@@ -22,6 +22,7 @@ module tb_memory_top;
         .writeEn(writeEn),
         .writeAddr(writeAddr),
         .startAddr(startAddr),
+        .finalAddr(finalAddr),
         .dataIn(dataIn),
         .finished(finished),
         .dataOut(dataOut)
@@ -39,11 +40,12 @@ module tb_memory_top;
         writeEn = 0;
         writeAddr = 0;
         startAddr = 0;
+        finalAddr = 0;
         dataIn = 0;
 
         #10 rst = 0;
 
-        file = $fopen("ifmap.mem", "r");
+        file = $fopen("router_base.mem", "r");
         if (file == 0) begin
             $display("Error: Could not open file!");
             $stop;
@@ -60,6 +62,8 @@ module tb_memory_top;
             #10;
             i = i + 1;
         end
+
+        finalAddr = i;
 
         $fclose(file);
 

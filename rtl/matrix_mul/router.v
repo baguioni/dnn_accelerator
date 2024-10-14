@@ -6,11 +6,10 @@ module router #(
     parameter TempAddrWidth = $clog2(MaxWidth)
 )(
     input clk, rst, routeEn, // Assume routeEn will be turned on when we want to route
-    input [AddrWidth-1:0] startAddr, // Start address of data in buffer
+    input [AddrWidth-1:0] startAddr, finalAddr, // Start address of data in buffer
     input [DataWidth-1:0] dataIn,    // Data coming from buffer, assume it is DataWidth
     output reg readEn, finished,
     output reg [AddrWidth-1:0] readAddr, // Address of data in buffer
-    output reg [AddrWidth-1:0] lastReadAddr, // Last Read Address of data. Used for routing next set of data
     output reg [MaxWidth*DataWidth-1:0] dataOut // Data going to PE
 );
     // State encoding
@@ -18,7 +17,8 @@ module router #(
     localparam INITIALIZE = 3'b001;
     localparam ROUTE = 3'b010;
     localparam WAIT = 3'b011; // Wait for data to be sent from buffer to router
-    localparam DONE = 3'b100;
+    localparam OUTPUT = 3'b100;
+    localparam CHECK = 3'b101;
 
     reg [3:0] state;
     reg [TempAddrWidth-1:0] indexCounter;
@@ -37,7 +37,6 @@ module router #(
             finished <= 0;
             dataOut <= 0;
             readAddr <= 0;
-            lastReadAddr <= 0;
             readEn <= 0;
             state <= IDLE;
         end else begin
@@ -64,26 +63,36 @@ module router #(
                     state <= ROUTE;
                 end
                 ROUTE: begin
-                    $display("Data in: %h | readAddr: %h | indexCounter: %h", dataIn, readAddr, indexCounter);
+                    // $display("Data in: %h | readAddr: %h | indexCounter: %h", dataIn, readAddr, indexCounter);
                     TempDataOut[indexCounter] <= dataIn;
+
                     if (indexCounter < MaxWidth) begin
                         indexCounter <= indexCounter + 1;
                         readAddr <= readAddr + 1;
                         state <= WAIT;
                     end else begin
-                        state <= DONE;
+                        state <= OUTPUT;
                     end
                 end
-                DONE: begin
+                OUTPUT: begin
                     for (i = 0; i < MaxWidth; i = i + 1) begin
                         // Concatenate TempDataOut into dataOut
                         dataOut[(i+1)*DataWidth-1 -: DataWidth] <= TempDataOut[i];
                     end
                     readEn <= 0;
                     indexCounter <= 0;
-                    finished <= 1;
-                    lastReadAddr <= readAddr;
-                    state <= IDLE;  // Go back to IDLE after DONE
+                    state <= CHECK;
+                end
+                CHECK: begin
+                    $display("%h", dataOut);
+                    // Check if we are at the final address
+                    if (readAddr >= finalAddr) begin
+                        finished <= 1;
+                        state <= IDLE;
+                    end else begin
+                        state <= WAIT;
+                        readEn <= 1;
+                    end
                 end
             endcase
         end

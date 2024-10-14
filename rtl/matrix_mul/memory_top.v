@@ -1,6 +1,6 @@
 module memory_top (
     input clk, rst, routeEn, writeEn,
-    input [AddrWidth-1:0] writeAddr, startAddr,
+    input [AddrWidth-1:0] writeAddr, startAddr, finalAddr,
     input [DataWidth-1:0] dataIn, // Data to buffer
     output finished,
     output [MaxWidth*DataWidth-1:0] dataOut // Data from router
@@ -12,7 +12,6 @@ module memory_top (
 
     wire readEn;
     wire [AddrWidth-1:0] readAddr;
-    wire [AddrWidth-1:0] lastReadAddr;
     wire [DataWidth-1:0] bufferOut;
 
     buffer #(
@@ -37,10 +36,10 @@ module memory_top (
         .rst(rst),
         .routeEn(routeEn),
         .startAddr(startAddr),
+        .finalAddr(finalAddr),
         .dataIn(bufferOut),
         .readEn(readEn),
         .readAddr(readAddr),
-        .lastReadAddr(lastReadAddr),
         .dataOut(dataOut),
         .finished(finished)
     );
