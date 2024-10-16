@@ -1,7 +1,7 @@
 // iverilog -o dsn router.v buffer.v memory_top.v tb_memory_top.v
 module tb_memory_top;
     localparam MaxWidth = 9;
-    localparam Depth = 32;  
+    localparam Depth = 128;  
     localparam DataWidth = 8;
     localparam AddrWidth = $clog2(Depth);
 
@@ -34,6 +34,8 @@ module tb_memory_top;
 
     integer i;
     initial begin
+        $dumpfile("tb.vcd");
+        $dumpvars;
         clk = 0;
         rst = 1;
         routeEn = 0;
@@ -45,7 +47,7 @@ module tb_memory_top;
 
         #10 rst = 0;
 
-        file = $fopen("router_base.mem", "r");
+        file = $fopen("router_9x9.mem", "r");
         if (file == 0) begin
             $display("Error: Could not open file!");
             $stop;

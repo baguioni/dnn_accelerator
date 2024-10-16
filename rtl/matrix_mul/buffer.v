@@ -2,7 +2,7 @@
 // Byte-addressable memory
 // Assume each row stores a byte
 module buffer #(
-    parameter Depth = 32,
+    parameter Depth = 64,
     parameter DataWidth = 8,
     parameter AddrWidth = $clog2(Depth)
     // parameter FileName = "weights.mem"

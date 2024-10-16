@@ -84,7 +84,7 @@ module router #(
                     state <= CHECK;
                 end
                 CHECK: begin
-                    $display("%h", dataOut);
+                    $display("Current Data to be routed: %h", dataOut);
                     // Check if we are at the final address
                     if (readAddr >= finalAddr) begin
                         finished <= 1;

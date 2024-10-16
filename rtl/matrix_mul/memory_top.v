@@ -6,7 +6,7 @@ module memory_top (
     output [MaxWidth*DataWidth-1:0] dataOut // Data from router
 );
     localparam MaxWidth = 9;
-    localparam Depth = 32;
+    localparam Depth = 128;
     localparam DataWidth = 8;
     localparam AddrWidth = $clog2(Depth);
 
